@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "60defed3-d833-44c9-819b-336e067fab29",
+		"name": "Week2Day1_Chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17709036"
+	},
+	"item": [
+		{
+			"name": "CreateIncident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create Incident\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Save Response in Test Tab\r",
+							"var resp=pm.response.json();\r",
+							"console.log(resp.result.sys_id)\r",
+							"var systemid=resp.result.sys_id;\r",
+							"//pm.globals.set(\"variable_key\", resp.result.sys_id);\r",
+							"pm.globals.set(\"SysID\",systemid );"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"short_description\": \"{{short_desc}}\",\r\n    \"description\": \"{{desc}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUri}}/api/now/table/{{incident}}?sysparm_fields=sys_id,short_description",
+					"host": [
+						"{{BaseUri}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{incident}}"
+					],
+					"query": [
+						{
+							"key": "sysparm_fields",
+							"value": "sys_id,short_description"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateIncident",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"short_description\": \"updated via Postman\",\r\n    \"description\": \"updated with postman\",\r\n    \"closed_by\":\"sudarshan\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUri}}/api/now/table/{{incident}}/{{SysID}}?sysparm_fields=sys_id",
+					"host": [
+						"{{BaseUri}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{incident}}",
+						"{{SysID}}"
+					],
+					"query": [
+						{
+							"key": "sysparm_fields",
+							"value": "sys_id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteIncident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUri}}/api/now/table/{{incident}}/{{SysID}}",
+					"host": [
+						"{{BaseUri}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{incident}}",
+						"{{SysID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "qa4@7NHzLC@g",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "incident",
+			"value": "incident",
+			"type": "string"
+		}
+	]
+}
